@@ -10,11 +10,18 @@ AlbumList.propTypes = {
 function AlbumList(props) {
   const { list } = props;
   return (
-    <ul className="album-list">
-      {list.map((album) => (
-        <AlbumItem album={album} />
-      ))}
-    </ul>
+    <>
+      <div className="album-list">
+        <h2>Maybe you like?</h2>
+        <ul>
+          {list.map((album) => (
+            <li key={album.id}>
+              <AlbumItem album={album} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
   );
 }
 
