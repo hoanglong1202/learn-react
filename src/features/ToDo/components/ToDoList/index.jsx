@@ -24,7 +24,7 @@ function ToDoList({ toDoList, onToDoClick }) {
       {toDoList.map((toDo, index) => (
         <li
           key={toDo.id}
-          className={toDo.status === "completed" && "completed"}
+          className={toDo.status === "completed" ? "completed" : undefined}
           onClick={() => handleToDoClick(index)}
         >
           {toDo.title}
