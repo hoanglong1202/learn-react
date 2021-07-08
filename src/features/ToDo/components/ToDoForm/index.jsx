@@ -22,7 +22,11 @@ function ToDoForm(props) {
   });
 
   const handleSubmit = (values) => {
-    console.log("TO DO FORM: " + JSON.stringify(values));
+    const { onSubmit } = props;
+
+    if (onSubmit) onSubmit(values);
+
+    form.reset();
   };
 
   return (

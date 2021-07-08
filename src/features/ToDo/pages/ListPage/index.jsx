@@ -91,12 +91,18 @@ function ListPage(props) {
   );
 
   const handleToDoFormSubmit = (values) => {
-    console.log("To do form submit " + values);
+    const newToDo = {
+      id: toDoList.length + 1,
+      title: values.title,
+      status: "new",
+    };
+    const newToDoList = [...toDoList, newToDo]
+    setToDoList(newToDoList);
   };
 
   return (
     <div>
-      <ToDoForm onsubmit={handleToDoFormSubmit} />
+      <ToDoForm onSubmit={handleToDoFormSubmit} />
 
       <ToDoList toDoList={filteredToDoList} onToDoClick={handleToDoClick} />
       <button onClick={handleFilteredAll}>All</button>
