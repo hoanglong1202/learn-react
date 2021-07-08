@@ -1,7 +1,10 @@
+
 import React from "react";
 import { NavLink, Redirect, Route, Switch } from "react-router-dom";
-import Album from "./features/Album";
-import ToDo from "./features/ToDo";
+import NotFound from "components/NotFound";
+import Album from "features/Album";
+import Counter from "features/Counter";
+import ToDo from "features/ToDo";
 
 function App() {
   return (
@@ -18,9 +21,11 @@ function App() {
         <Redirect from="/home" to="/todos" />
         <Redirect from="/bank/credit" to="/bank" exact />
 
-        <Route path="/todos" component={ToDo} />
-        <Route path="/albums" component={Album} />
+        <Route path="/" component={Counter} exact/>
+        <Route path="/todos" component={ToDo} exact/>
+        <Route path="/albums" component={Album} exact/>
 
+        <Route component={NotFound} />
       </Switch>
     </>
   );
