@@ -1,8 +1,7 @@
 import React from "react";
+import { NavLink, Redirect, Route, Switch } from "react-router-dom";
 import Album from "./features/Album";
 import ToDo from "./features/ToDo";
-import NotFound from "./components/NotFound";
-import { Route, Redirect, Switch, NavLink } from "react-router-dom";
 
 function App() {
   return (
@@ -22,7 +21,6 @@ function App() {
         <Route path="/todos" component={ToDo} />
         <Route path="/albums" component={Album} />
 
-        <Route component={NotFound} />
       </Switch>
     </>
   );

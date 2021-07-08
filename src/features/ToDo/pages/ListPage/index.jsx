@@ -3,6 +3,7 @@ import ToDoList from "../../components/ToDoList";
 import queryString from "query-string";
 import { useHistory, useLocation, useRouteMatch } from "react-router-dom";
 import productsApi from "../../../../api/productApi";
+import ToDoForm from "../../components/ToDoForm";
 
 const initToDoList = [
   {
@@ -89,8 +90,14 @@ function ListPage(props) {
     [toDoList, filteredStatus]
   );
 
+  const handleToDoFormSubmit = (values) => {
+    console.log("To do form submit " + values);
+  };
+
   return (
     <div>
+      <ToDoForm onsubmit={handleToDoFormSubmit} />
+
       <ToDoList toDoList={filteredToDoList} onToDoClick={handleToDoClick} />
       <button onClick={handleFilteredAll}>All</button>
       <button onClick={handleFilteredCompleted}>Completed</button>
