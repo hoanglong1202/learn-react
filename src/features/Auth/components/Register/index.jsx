@@ -4,9 +4,13 @@ import RegisterForm from "../RegisterForm";
 Register.propTypes = {};
 
 function Register(props) {
+  const handleSubmit = (values) => {
+    console.log("Form Submit: " + JSON.stringify(values));
+  };
+
   return (
     <div>
-      <RegisterForm />
+      <RegisterForm onSubmit={handleSubmit} />
     </div>
   );
 }

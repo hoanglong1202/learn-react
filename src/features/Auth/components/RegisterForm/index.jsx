@@ -1,17 +1,12 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import InputField from "components/form-control/InputField";
-import {
-  Avatar,
-  makeStyles,
-  Typography,
-  Theme,
-  Button,
-} from "@material-ui/core";
+import { Avatar, Button, makeStyles, Typography } from "@material-ui/core";
 import CodeIcon from "@material-ui/icons/Code";
+import InputField from "components/form-control/InputField";
+import PropTypes from "prop-types";
+import React from "react";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import PasswordField from "components/form-control/PasswordField";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,14 +26,35 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 RegisterForm.propTypes = {
-  onsubmit: PropTypes.func,
+  onSubmit: PropTypes.func,
 };
 
 function RegisterForm(props) {
   const classes = useStyles();
 
   const schema = yup.object().shape({
-    title: yup.string().required("Please enter title"),
+    fullName: yup
+      .string()
+      .required("Please enter your name!")
+      .test(
+        "fullNameValidate",
+        "Your name should have at least two words.",
+        (value) => {
+          return value.split(" ").length >= 2;
+        }
+      ),
+    email: yup
+      .string()
+      .required("Please enter your email address.")
+      .email("Please enter valid email address."),
+    password: yup
+      .string()
+      .required("Please enter your password.")
+      .min(6, "Your password need at least 6 characters."),
+    retypePassword: yup
+      .string()
+      .required("Please retype your password.")
+      .oneOf([yup.ref("password")], "Password does not match."),
   });
 
   const form = useForm({
@@ -72,11 +88,16 @@ function RegisterForm(props) {
 
         <InputField form={form} name="fullName" label="Full Name" />
         <InputField form={form} name="email" label="Email" />
-        <InputField form={form} name="password" label="Password" />
-        <InputField form={form} name="retypePassword" label="Retype Password" />
+        <PasswordField form={form} name="password" label="Password" />
+        <PasswordField
+          form={form}
+          name="retypePassword"
+          label="Retype Password"
+        />
 
         <Button
           className={classes.submit}
+          type="submit"
           fullWidth
           variant="contained"
           color="primary"
