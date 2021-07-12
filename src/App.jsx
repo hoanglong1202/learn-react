@@ -1,10 +1,10 @@
-import React from "react";
-import { NavLink, Redirect, Route, Switch } from "react-router-dom";
+import Header from "components/Header";
 import NotFound from "components/NotFound";
 import Album from "features/Album";
-import Header from "components/Header";
 import Counter from "features/Counter";
 import ToDo from "features/ToDo";
+import React from "react";
+import { NavLink, Redirect, Route, Switch } from "react-router-dom";
 
 function App() {
   return (

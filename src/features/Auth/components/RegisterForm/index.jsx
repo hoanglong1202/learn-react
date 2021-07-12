@@ -1,16 +1,23 @@
-import { Avatar, Button, makeStyles, Typography } from "@material-ui/core";
+import { yupResolver } from "@hookform/resolvers/yup";
+import {
+  Avatar,
+  Button,
+  LinearProgress,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
 import CodeIcon from "@material-ui/icons/Code";
 import InputField from "components/form-control/InputField";
+import PasswordField from "components/form-control/PasswordField";
 import PropTypes from "prop-types";
 import React from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import PasswordField from "components/form-control/PasswordField";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    margin: theme.spacing(4, 0),
+    position: "relative",
+    paddingTop: theme.spacing(4),
   },
   avatar: {
     margin: "0 auto",
@@ -22,6 +29,12 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2, 0),
+  },
+  progress: {
+    position: "absolute",
+    top: theme.spacing(1),
+    left: 0,
+    right: 0,
   },
 }));
 
@@ -67,16 +80,21 @@ function RegisterForm(props) {
     resolver: yupResolver(schema),
   });
 
-  const handleSubmit = (values) => {
+  const { isSubmitting } = form.formState;
+
+  const handleSubmit = async (values) => {
     const { onSubmit } = props;
 
-    if (onSubmit) onSubmit(values);
+    if (onSubmit) {
+      await onSubmit(values);
+    }
 
     form.reset();
   };
 
   return (
     <div className={classes.root}>
+      {isSubmitting && <LinearProgress className={classes.progress} />}
       <form onSubmit={form.handleSubmit(handleSubmit)}>
         <Avatar className={classes.avatar}>
           <CodeIcon />
@@ -97,6 +115,7 @@ function RegisterForm(props) {
 
         <Button
           className={classes.submit}
+          disable={isSubmitting}
           type="submit"
           fullWidth
           variant="contained"
