@@ -89,7 +89,6 @@ function RegisterForm(props) {
       await onSubmit(values);
     }
 
-    form.reset();
   };
 
   return (
@@ -115,7 +114,7 @@ function RegisterForm(props) {
 
         <Button
           className={classes.submit}
-          disable={isSubmitting}
+          disabled={isSubmitting}
           type="submit"
           fullWidth
           variant="contained"

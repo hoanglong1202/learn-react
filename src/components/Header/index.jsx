@@ -38,7 +38,7 @@ export default function Header() {
     setOpen(true);
   };
 
-  const handleClose = (event, reason) => {
+  const handleClose = () => {
     setOpen(false);
   };
 
@@ -74,7 +74,7 @@ export default function Header() {
         onClose={(event, backdropClick) => handleClose}
       >
         <DialogContent>
-          <Register />
+          <Register closeDialog={handleClose} />
         </DialogContent>
 
         <DialogActions>
