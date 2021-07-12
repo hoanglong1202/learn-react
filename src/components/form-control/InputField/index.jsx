@@ -28,6 +28,8 @@ function InputField(props) {
           label={label}
           disabled={disabled}
           error={hasError}
+          margin="normal"
+          variant="outlined"
           helperText={formState.errors[name]?.message}
         />
       )}
