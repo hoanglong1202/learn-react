@@ -119,6 +119,7 @@ function RegisterForm(props) {
           fullWidth
           variant="contained"
           color="primary"
+          size="large"
         >
           Create An Account
         </Button>
