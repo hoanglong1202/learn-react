@@ -4,6 +4,8 @@ import {
   Dialog,
   DialogContent,
   IconButton,
+  Menu,
+  MenuItem,
   Toolbar,
   Typography,
 } from "@material-ui/core";
@@ -14,7 +16,10 @@ import CodeIcon from "@material-ui/icons/Code";
 import Login from "features/Auth/components/Login";
 import Register from "features/Auth/components/Register";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import { logOut } from "features/Auth/userSlice";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -47,9 +52,13 @@ const MODE = {
 };
 
 export default function Header() {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState(MODE.LOGIN);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const currentUser = useSelector((state) => state.user.current);
+  const isLogged = currentUser.id ? true : false;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -57,6 +66,20 @@ export default function Header() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleOpenMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+
+  const handleUserLogOut = () => {
+    dispatch(logOut());
+    setAnchorEl(null);
+
   };
 
   return (
@@ -78,11 +101,38 @@ export default function Header() {
             <Button color="inherit">Album</Button>
           </NavLink>
 
-          <Button color="inherit" onClick={handleClickOpen}>
-            Resgister
-          </Button>
+          {!isLogged && (
+            <Button color="inherit" onClick={handleClickOpen}>
+              Login
+            </Button>
+          )}
+
+          {isLogged && (
+            <IconButton color="inherit" onClick={handleOpenMenu}>
+              <AccountCircleIcon color="inherit" />
+            </IconButton>
+          )}
         </Toolbar>
       </AppBar>
+
+      <Menu
+        keepMounted
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        getContentAnchorEl={null}
+        onClose={handleCloseMenu}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+      >
+        <MenuItem onClick={handleCloseMenu}>My account</MenuItem>
+        <MenuItem onClick={handleUserLogOut}>Logout</MenuItem>
+      </Menu>
 
       <Dialog
         disableEscapeKeyDown

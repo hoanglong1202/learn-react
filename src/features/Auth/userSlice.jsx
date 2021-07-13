@@ -25,10 +25,17 @@ export const login = createAsyncThunk("user/login", async (payload) => {
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    current: {},
+    current: JSON.parse(localStorage.getItem(StorageKeys.USER)) || {},
     settings: {},
   },
-  reducers: {},
+  reducers: {
+    logOut: (state) => {
+      localStorage.removeItem(StorageKeys.USER);
+      localStorage.removeItem(StorageKeys.TOKEN);
+
+      state.current = {};
+    },
+  },
   extraReducers: {
     [register.fulfilled]: (state, action) => {
       state.current = action.payload;
@@ -39,5 +46,6 @@ const userSlice = createSlice({
   },
 });
 
-const { reducer } = userSlice;
+const { actions, reducer } = userSlice;
+export const { logOut } = actions;
 export default reducer;
