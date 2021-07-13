@@ -1,9 +1,11 @@
 import {
+  Box,
   Button,
-  Dialog, DialogContent,
+  Dialog,
+  DialogContent,
   IconButton,
   Toolbar,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
@@ -39,9 +41,15 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
+const MODE = {
+  REGISTER: "register",
+  LOGIN: "login",
+};
+
 export default function Header() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [mode, setMode] = useState(MODE.LOGIN);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -82,12 +90,33 @@ export default function Header() {
         aria-labelledby="form-dialog-title"
         onClose={(event, backdropClick) => handleClose}
       >
-        <IconButton className={classes.closeButton} onClick={handleClose} >
+        <IconButton className={classes.closeButton} onClick={handleClose}>
           <Close />
         </IconButton>
         <DialogContent>
-          {/* <Register closeDialog={handleClose} /> */}
-          <Login closeDialog={handleClose} />
+          {mode === MODE.REGISTER && (
+            <>
+              <Register closeDialog={handleClose} />
+
+              <Box textAlign="center">
+                <Button color="primary" onClick={() => setMode(MODE.LOGIN)}>
+                  Already have an account? Login here.
+                </Button>
+              </Box>
+            </>
+          )}
+
+          {mode === MODE.LOGIN && (
+            <>
+              <Login closeDialog={handleClose} />
+
+              <Box textAlign="center">
+                <Button color="primary" onClick={() => setMode(MODE.REGISTER)}>
+                  Don't have an account? Register here.
+                </Button>
+              </Box>
+            </>
+          )}
         </DialogContent>
       </Dialog>
     </div>

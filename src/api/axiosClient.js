@@ -31,10 +31,12 @@ axiosClient.interceptors.response.use(
     // Do something with response error
     const { config, status, data } = error.response;
     const URL = ["/auth/local/register", "/auth/local"];
+
     if (URL.includes(config.url) && status === 400) {
       const errorData = data.data || [];
       const arrayMessages = errorData.length > 0 ? errorData[0].messages : [];
       const firstMessage = arrayMessages.length > 0 ? arrayMessages[0] : {};
+      
       throw new Error(firstMessage.message);
     }
 
