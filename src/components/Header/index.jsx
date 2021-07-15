@@ -79,7 +79,6 @@ export default function Header() {
   const handleUserLogOut = () => {
     dispatch(logOut());
     setAnchorEl(null);
-
   };
 
   return (
