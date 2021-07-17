@@ -8,7 +8,7 @@ ProductsSkeletonList.propTypes = {
 };
 
 ProductsSkeletonList.defaultProps = {
-  length: 8,
+  length: 12,
 };
 
 function ProductsSkeletonList({ length }) {
@@ -19,7 +19,7 @@ function ProductsSkeletonList({ length }) {
         {skeletonArray.map((x, index) => (
           <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
             <Box p={1}>
-              <Skeleton variant="rect" width="100%" height={118} />
+              <Skeleton variant="rect" width="100%" height={200} />
               <Skeleton />
               <Skeleton width="60%" />
             </Box>
