@@ -9,8 +9,10 @@ import {
 import { Pagination } from "@material-ui/lab";
 import productsApi from "api/productApi";
 import React, { useEffect, useState } from "react";
+import ProductFilters from "../components/ProductFilters";
 import ProductList from "../components/ProductList";
 import ProductsSkeletonList from "../components/ProductSkeletonList";
+import ProductSort from "../components/ProductSort";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -35,7 +37,11 @@ function ListPage(props) {
   const [productList, setProductList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [pagination, setPagination] = useState({});
-  const [filter, setFilter] = useState({ _page: 1, _limit: 12 });
+  const [filter, setFilter] = useState({
+    _page: 1,
+    _limit: 12,
+    _sort: "salePrice:ASC",
+  });
   const { total, limit } = pagination;
 
   useEffect(() => {
@@ -56,6 +62,14 @@ function ListPage(props) {
     setFilter((preState) => ({ ...preState, _page: page }));
   };
 
+  const handleSortChange = (newSortValue) => {
+    setFilter((preState) => ({ ...preState, _sort: newSortValue }));
+  };
+
+  const handleFiltersChange = (newFilters) => {
+    setFilter((preState) => ({ ...preState, ...newFilters }));
+  };
+
   return (
     <Box>
       <Container>
@@ -63,10 +77,16 @@ function ListPage(props) {
           <Grid item className={classes.left}>
             <Paper elevation={0}>
               <Typography>Left Column</Typography>
+              <ProductFilters filters={filter} onChange={handleFiltersChange} />
             </Paper>
           </Grid>
           <Grid item className={classes.right}>
             <Paper elevation={0}>
+              <ProductSort
+                currenSort={filter._sort}
+                onChange={handleSortChange}
+              />
+
               {loading ? (
                 <ProductsSkeletonList />
               ) : (
