@@ -3,8 +3,7 @@ import {
   Container,
   Grid,
   makeStyles,
-  Paper,
-  Typography,
+  Paper
 } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
 import productsApi from "api/productApi";
@@ -76,7 +75,6 @@ function ListPage(props) {
         <Grid container spacing={1}>
           <Grid item className={classes.left}>
             <Paper elevation={0}>
-              <Typography>Left Column</Typography>
               <ProductFilters filters={filter} onChange={handleFiltersChange} />
             </Paper>
           </Grid>
