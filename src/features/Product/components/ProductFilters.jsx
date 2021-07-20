@@ -10,7 +10,7 @@ ProductFilters.propTypes = {
   filters: PropTypes.object.isRequired,
 };
 
-function ProductFilters({ filters, onChange }) {
+function ProductFilters({ filters = {}, onChange }) {
   const handleCategoryChange = (newCategoryID) => {
     if (!onChange) return;
 

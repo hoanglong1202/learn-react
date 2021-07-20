@@ -1,13 +1,8 @@
-import {
-  Box,
-  Container,
-  Grid,
-  makeStyles,
-  Paper
-} from "@material-ui/core";
+import { Box, Container, Grid, makeStyles, Paper } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
 import productsApi from "api/productApi";
 import React, { useEffect, useState } from "react";
+import FilterViewer from "../components/Filters/FilterViewer";
 import ProductFilters from "../components/ProductFilters";
 import ProductList from "../components/ProductList";
 import ProductsSkeletonList from "../components/ProductSkeletonList";
@@ -33,8 +28,8 @@ const useStyles = makeStyles((theme) => ({
 
 function ListPage(props) {
   const classes = useStyles();
-  const [productList, setProductList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [productList, setProductList] = useState([]);
   const [pagination, setPagination] = useState({});
   const [filter, setFilter] = useState({
     _page: 1,
@@ -69,6 +64,10 @@ function ListPage(props) {
     setFilter((preState) => ({ ...preState, ...newFilters }));
   };
 
+  const handleFiltersViewChange = (newFilters) => {
+    setFilter(newFilters);
+  };
+
   return (
     <Box>
       <Container>
@@ -83,6 +82,11 @@ function ListPage(props) {
               <ProductSort
                 currenSort={filter._sort}
                 onChange={handleSortChange}
+              />
+
+              <FilterViewer
+                filters={filter}
+                onChange={handleFiltersViewChange}
               />
 
               {loading ? (

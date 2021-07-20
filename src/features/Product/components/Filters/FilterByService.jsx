@@ -1,14 +1,8 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
 import {
-  Box,
-  Typography,
-  TextField,
-  Button,
-  makeStyles,
-  FormControlLabel,
-  Checkbox,
+  Box, Checkbox, FormControlLabel, makeStyles, Typography
 } from "@material-ui/core";
+import PropTypes from "prop-types";
+import React from "react";
 
 FilterByService.propTypes = {
   onChange: PropTypes.func,
@@ -43,7 +37,7 @@ function FilterByService({ filters, onChange }) {
 
   const serviceList = [
     { value: "isPromotion", label: "Có khuyến mãi" },
-    { value: "isFreeShip", label: "Vận chuyển miễn phí " },
+    { value: "isFreeShip", label: "Vận chuyển miễn phí" },
   ];
 
   return (
