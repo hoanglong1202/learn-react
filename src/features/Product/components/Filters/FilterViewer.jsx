@@ -87,14 +87,13 @@ function FilterViewer({ filters = {}, onChange = null }) {
       id: 4,
       getLabel: (filters) => {
         return categories[filters["category.id"] - 1].name;
-        // return filters["category.id"]
       },
       isActive: () => true,
       isVisible: (filters) => Boolean(filters["category.id"]),
       isRemove: true,
       onRemove: (filters) => {
         const newFilter = { ...filters };
-        delete filters["category.id"];
+        delete newFilter["category.id"];
 
         return newFilter;
       },
@@ -112,6 +111,7 @@ function FilterViewer({ filters = {}, onChange = null }) {
       }
     })();
   }, []);
+
   return (
     <Box component="ul" className={classes.root}>
       {FILTER_LIST.filter((x) => x.isVisible(filters)).map((x) => (
@@ -120,7 +120,6 @@ function FilterViewer({ filters = {}, onChange = null }) {
             variant="outlined"
             label={x.getLabel(filters)}
             color={x.isActive(filters) ? "primary" : "outlined"}
-            // clickable={!x.isRemove}
             onDelete={
               x.isRemove &&
               (() => {
