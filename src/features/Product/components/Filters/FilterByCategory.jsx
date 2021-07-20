@@ -47,20 +47,24 @@ function FilterByCategory({ onChange }) {
     })();
   }, []);
 
+  const skeletonArray = Array.from(new Array(5));
+
   return (
     <Box className={classes.root}>
       <Typography variant="subtitle2">DANH MỤC SẢN PHẨM</Typography>
 
       {loading ? (
         <>
-          {Array.from(new Array(5)).map((_, index) => (
-            <Skeleton key={index} width="85%" />
+          {skeletonArray.map((x, index) => (
+            <Box key={index} mt={1}>
+              <Skeleton width="85%" />
+            </Box>
           ))}
         </>
       ) : (
         <ul className={classes.menu}>
           {categoryList.map((category) => (
-            <li key={category.id} onClick={() => onChange(category.id)}>
+            <li key={category.name} onClick={() => onChange(category.id)}>
               <Typography variant="body2">{category.name}</Typography>
             </li>
           ))}
