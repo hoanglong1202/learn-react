@@ -2,29 +2,32 @@ import React from "react";
 import PropTypes from "prop-types";
 import FilterByCategory from "./Filters/FilterByCategory";
 import FilterByPrice from "./Filters/FilterByPrice";
+import FilterByService from "./Filters/FilterByService";
 import { Box } from "@material-ui/core";
 
 ProductFilters.propTypes = {
   onChange: PropTypes.func,
+  filters: PropTypes.object.isRequired,
 };
 
-function ProductFilters({ onChange }) {
+function ProductFilters({ filters, onChange }) {
   const handleCategoryChange = (newCategoryID) => {
     if (!onChange) return;
 
     onChange({ "category.id": newCategoryID });
   };
 
-  const handlePriceChange = (priceFilter) => {
+  const onChangeFilter = (newFilters) => {
     if (!onChange) return;
 
-    onChange(priceFilter);
+    onChange(newFilters);
   };
 
   return (
     <Box>
       <FilterByCategory onChange={handleCategoryChange} />
-      <FilterByPrice onChange={handlePriceChange} />
+      <FilterByPrice onChange={onChangeFilter} />
+      <FilterByService filters={filters} onChange={onChangeFilter} />
     </Box>
   );
 }
