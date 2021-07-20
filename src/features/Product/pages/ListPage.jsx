@@ -1,7 +1,7 @@
 import { Box, Container, Grid, makeStyles, Paper } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
 import productsApi from "api/productApi";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import FilterViewer from "../components/Filters/FilterViewer";
 import ProductFilters from "../components/ProductFilters";
@@ -32,23 +32,29 @@ function ListPage(props) {
   const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
-  const queryParams = queryString.parse(location.search);
+  
+  const queryParams = useMemo(() => {
+    const params = queryString.parse(location.search);
+    return {
+      ...params,
+      _page: Number.parseInt(params._page) || 1,
+      _limit: Number.parseInt(params._limit) || 12,
+      _sort: params._sort || "salePrice:ASC",
+      isFreeShip: params.isFreeShip === "true",
+      isPromotion: params.isPromotion === "true",
+    };
+  }, [location.search]);
 
   const [loading, setLoading] = useState(true);
   const [productList, setProductList] = useState([]);
   const [pagination, setPagination] = useState({});
-  const [filter, setFilter] = useState(() => ({
-    ...queryParams,
-    _page: Number.parseInt(queryParams._page) || 1,
-    _limit: Number.parseInt(queryParams._limit) || 12,
-    _sort: queryParams._sort || "salePrice:ASC",
-  }));
+
   const { total, limit } = pagination;
 
   useEffect(() => {
     (async () => {
       try {
-        const { data, pagination } = await productsApi.getAll(filter);
+        const { data, pagination } = await productsApi.getAll(queryParams);
         setProductList(data);
         setPagination(pagination);
       } catch (error) {
@@ -57,29 +63,49 @@ function ListPage(props) {
 
       setLoading(false);
     })();
-  }, [filter]);
+  }, [queryParams]);
 
-  useEffect(() => {
+  const handlePageChange = (e, page) => {
+    const filter = {
+      ...queryParams,
+      _page: page,
+    };
+
     history.push({
       pathname: history.location.pathname,
       search: queryString.stringify(filter),
     });
-  }, [history, filter]);
-
-  const handlePageChange = (e, page) => {
-    setFilter((preState) => ({ ...preState, _page: page }));
   };
 
   const handleSortChange = (newSortValue) => {
-    setFilter((preState) => ({ ...preState, _sort: newSortValue }));
+    const filter = {
+      ...queryParams,
+      _sort: newSortValue,
+    };
+
+    history.push({
+      pathname: history.location.pathname,
+      search: queryString.stringify(filter),
+    });
   };
 
   const handleFiltersChange = (newFilters) => {
-    setFilter((preState) => ({ ...preState, ...newFilters }));
+    const filter = {
+      ...queryParams,
+      ...newFilters,
+    };
+
+    history.push({
+      pathname: history.location.pathname,
+      search: queryString.stringify(filter),
+    });
   };
 
   const handleFiltersViewChange = (newFilters) => {
-    setFilter(newFilters);
+    history.push({
+      pathname: history.location.pathname,
+      search: queryString.stringify(newFilters),
+    });
   };
 
   return (
@@ -88,18 +114,21 @@ function ListPage(props) {
         <Grid container spacing={1}>
           <Grid item className={classes.left}>
             <Paper elevation={0}>
-              <ProductFilters filters={filter} onChange={handleFiltersChange} />
+              <ProductFilters
+                filters={queryParams}
+                onChange={handleFiltersChange}
+              />
             </Paper>
           </Grid>
           <Grid item className={classes.right}>
             <Paper elevation={0}>
               <ProductSort
-                currenSort={filter._sort}
+                currenSort={queryParams._sort}
                 onChange={handleSortChange}
               />
 
               <FilterViewer
-                filters={filter}
+                filters={queryParams}
                 onChange={handleFiltersViewChange}
               />
 
