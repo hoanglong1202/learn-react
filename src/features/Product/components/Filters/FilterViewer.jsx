@@ -2,6 +2,7 @@ import { Box, Chip, makeStyles } from "@material-ui/core";
 import categoriesApi from "api/categoryApi";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
+import { formatPrice } from "utils";
 
 FilterViewer.propTypes = {
   filters: PropTypes.object,
@@ -63,13 +64,9 @@ function FilterViewer({ filters = {}, onChange = null }) {
     {
       id: 3,
       getLabel: (filters) =>
-        `Từ ${new Intl.NumberFormat("vn-VN", {
-          style: "currency",
-          currency: "VND",
-        }).format(filters.salePrice_gte)} đến ${new Intl.NumberFormat("vn-VN", {
-          style: "currency",
-          currency: "VND",
-        }).format(filters.salePrice_lte)}`,
+        `Từ ${formatPrice(filters.salePrice_gte)} đến ${formatPrice(
+          filters.salePrice_lte
+        )}`,
       isActive: () => true,
       isVisible: (filters) =>
         Boolean(filters.salePrice_lte || filters.salePrice_gte),
@@ -86,7 +83,7 @@ function FilterViewer({ filters = {}, onChange = null }) {
     {
       id: 4,
       getLabel: (filters) => {
-        return categories[filters["category.id"] - 1].name;
+        return categories[filters["category.id"] - 1]?.name || "Danh mục";
       },
       isActive: () => true,
       isVisible: (filters) => Boolean(filters["category.id"]),
@@ -114,20 +111,21 @@ function FilterViewer({ filters = {}, onChange = null }) {
 
   return (
     <Box component="ul" className={classes.root}>
-      {FILTER_LIST.filter((x) => x.isVisible(filters)).map((x) => (
-        <li key={x.label}>
+      {FILTER_LIST.filter((x) => x.isVisible(filters)).map((x, index) => (
+        <li key={index}>
           <Chip
             variant="outlined"
             label={x.getLabel(filters)}
-            color={x.isActive(filters) ? "primary" : "outlined"}
+            color={x.isActive(filters) ? "primary" : "default"}
             onDelete={
-              x.isRemove &&
-              (() => {
-                if (!onChange) return;
+              x.isRemove
+                ? null
+                : () => {
+                    if (!onChange) return;
 
-                const newFilters = x.onRemove(filters);
-                onChange(newFilters);
-              })
+                    const newFilters = x.onRemove(filters);
+                    onChange(newFilters);
+                  }
             }
             onClick={
               !x.isRemove
