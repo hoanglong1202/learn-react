@@ -1,6 +1,7 @@
 import Header from "components/Header";
 import NotFound from "components/NotFound";
 import Album from "features/Album";
+import CartFeature from "features/Cart";
 import Counter from "features/Counter";
 import Product from "features/Product";
 import ToDo from "features/ToDo";
@@ -20,6 +21,7 @@ function App() {
         <Route path="/todos" component={ToDo} />
         <Route path="/albums" component={Album} />
         <Route path="/products" component={Product} />
+        <Route path="/cart" component={CartFeature} />
 
         <Route component={NotFound} />
       </Switch>
