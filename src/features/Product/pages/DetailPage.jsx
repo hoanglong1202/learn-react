@@ -6,7 +6,9 @@ import {
   makeStyles,
   LinearProgress,
 } from "@material-ui/core";
+import { addToCart } from "features/Cart/cartSlice";
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import AddToCardForm from "../components/AddToCardForm";
 import ProductAdditional from "../components/ProductAdditional";
@@ -42,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
 
 function DetailPage() {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const { url } = useRouteMatch();
 
   const {
@@ -58,8 +61,13 @@ function DetailPage() {
     );
   }
 
-  const handleAddToCardSubmit = (formValue) => {
-    console.log("New form value: ", formValue);
+  const handleAddToCardSubmit = ({ quantity }) => {
+    const action = addToCart({
+      id: product.id,
+      product,
+      quantity,
+    });
+    dispatch(action);
   };
 
   return (
