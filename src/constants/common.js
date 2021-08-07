@@ -1,2 +1,2 @@
 export const STATIC_HOST = 'https://api.ezfrontend.com'
-export const THUMBNAIL_PLACEHOLDER = 'https://files.yande.re/image/c33a3e8ddfcc05c48154ea0c9fe3908a/yande.re%20817453%20azur_lane%20formidable_%28azur_lane%29%20rodriguez_%28kamwing%29%20seifuku%20thighhighs.jpg'
+export const THUMBNAIL_PLACEHOLDER = 'https://danbooru.donmai.us/data/original/95/ee/__amagi_chan_azur_lane_drawn_by_shasha_shasha159357__95eea8833553c7d293166fe25f79a250.jpg'

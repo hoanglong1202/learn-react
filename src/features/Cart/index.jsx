@@ -1,15 +1,11 @@
-import React from 'react';
-
-CartFeature.propTypes = {
-  
-};
+import React from "react";
+import { useSelector } from "react-redux";
+import { cartItemTotalSelector } from "./selectors";
+import { formatPrice } from "utils";
 
 function CartFeature(props) {
-  return (
-    <div>
-      This is Cart
-    </div>
-  );
+  const cartTotalMoney = useSelector(cartItemTotalSelector);
+  return <div>This is Cart {formatPrice(cartTotalMoney)}</div>;
 }
 
 export default CartFeature;

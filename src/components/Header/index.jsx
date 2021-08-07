@@ -1,4 +1,5 @@
 import {
+  Badge,
   Box,
   Button,
   Dialog,
@@ -11,15 +12,16 @@ import {
 } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
-import { Close } from "@material-ui/icons";
+import { Close, ShoppingCart } from "@material-ui/icons";
 import CodeIcon from "@material-ui/icons/Code";
 import Login from "features/Auth/components/Login";
 import Register from "features/Auth/components/Register";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useHistory } from "react-router-dom";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { logOut } from "features/Auth/userSlice";
+import { cartItemCountSelector } from "features/Cart/selectors";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -59,6 +61,8 @@ export default function Header() {
   const [anchorEl, setAnchorEl] = useState(null);
   const currentUser = useSelector((state) => state.user.current);
   const isLogged = currentUser.id ? true : false;
+  const cartItemCount = useSelector(cartItemCountSelector);
+  const history = useHistory();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -79,6 +83,10 @@ export default function Header() {
   const handleUserLogOut = () => {
     dispatch(logOut());
     setAnchorEl(null);
+  };
+
+  const handleCartClick = () => {
+    history.push("/cart");
   };
 
   return (
@@ -111,6 +119,16 @@ export default function Header() {
               <AccountCircleIcon color="inherit" />
             </IconButton>
           )}
+
+          <IconButton
+            aria-label="show 4 new mails"
+            color="inherit"
+            onClick={handleCartClick}
+          >
+            <Badge badgeContent={cartItemCount} color="secondary">
+              <ShoppingCart />
+            </Badge>
+          </IconButton>
         </Toolbar>
       </AppBar>
 
@@ -121,12 +139,12 @@ export default function Header() {
         getContentAnchorEl={null}
         onClose={handleCloseMenu}
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
+          vertical: "bottom",
+          horizontal: "right",
         }}
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
+          vertical: "top",
+          horizontal: "left",
         }}
       >
         <MenuItem onClick={handleCloseMenu}>My account</MenuItem>
